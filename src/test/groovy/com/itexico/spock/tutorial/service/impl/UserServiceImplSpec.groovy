@@ -13,7 +13,7 @@ class UserServiceImplSpec extends Specification {
     }
 
     def "Return users"() {
-        given: "There are more than one users stored in the data base"
+        given: "There are more than one users stored in the users repository"
 
         when: "I retrieve all of them"
 
@@ -32,10 +32,24 @@ class UserServiceImplSpec extends Specification {
     }
 
     def "Add users"() {
-        given: "The users table is empty"
+        given: "The users repository is empty"
 
+        when: "I add one user"
+
+        then: "That user is actually stored"
+
+        and: "It can be retrieved"
 
     }
 
+    def "Delete users"()    {
+        given: "There are two users in the users repository"
+
+        when : "I delete one of them"
+
+        then : "There is only one user stored in the repository"
+
+        and : "I can retrieve the remaining user"
+    }
 
 }
