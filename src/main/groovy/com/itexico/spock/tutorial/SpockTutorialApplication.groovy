@@ -25,7 +25,7 @@ class SpockTutorialApplication {
     }
 
     @Bean
-    @Profile(value = "!test")
+    @Profile(value = "dev")
     CommandLineRunner demo(GroupRepository groupRepository, UserRepository userRepository) {
         { args ->
             logger.info("running here!");
