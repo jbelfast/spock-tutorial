@@ -42,12 +42,17 @@ class UserServiceImpl implements UserService {
     }
 
     List<UserDTO> toDTO(List<User> users) {
-        List<UserDTO> userDTOs = new ArrayList<>(users.size())
-        users.each { userDTOs.add(toDTO(it)) }
+        def userDTOs = []
+        users.each { userDTOs << toDTO(it) }
         userDTOs
     }
 
     UserDTO toDTO(User user) {
         new UserDTO(id: user.id, firstName: user.firstName, lastName: user.lastName, group: new UserDTO.UserGroupDTO(id: user.group.id, name: user.group.name))
+    }
+
+    @Override
+    boolean exists(Long id) {
+        repository.exists(id)
     }
 }

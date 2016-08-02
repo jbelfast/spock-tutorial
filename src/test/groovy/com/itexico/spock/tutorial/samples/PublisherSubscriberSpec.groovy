@@ -51,4 +51,5 @@ class PublisherSpec extends Specification {
         1 * sub2.receive("event1")
         1 * sub2.receive("event2")
     }
+
 }

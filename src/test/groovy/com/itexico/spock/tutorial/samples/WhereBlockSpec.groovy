@@ -6,7 +6,7 @@ import spock.lang.Specification
 /**
  * Created by Juan Malacrida on 19-Jul-16.
  */
-class SpockExpectWhereTest extends Specification {
+class WhereBlockSpec extends Specification {
     def 'should select max of two numbers'() {
         expect:
         Math.max(a, b) == c
@@ -32,4 +32,5 @@ class SpockExpectWhereTest extends Specification {
         b << [1, 9]
         expectedResult << [[1, 5], [9, 9]]
     }
+
 }

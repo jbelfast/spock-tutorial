@@ -1,9 +1,12 @@
 package com.itexico.spock.tutorial.controllers
 
 import com.itexico.spock.tutorial.dto.GroupDTO
+import com.itexico.spock.tutorial.exceptions.CustomException
+import com.itexico.spock.tutorial.model.Group
 import com.itexico.spock.tutorial.service.GroupService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestMethod
 import org.springframework.web.bind.annotation.ResponseBody
@@ -28,6 +31,25 @@ class GroupRestController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     GroupDTO getById(@PathVariable Long id) {
-        groupService.toDTO(groupService.getById(id))
+        if (groupService.exists(id))
+            groupService.toDTO(groupService.getById(id))
+        throw new CustomException("Group with id: $id does not exist. Thus, it cannot be retrieved.")
+    }
+
+    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json")
+    @ResponseBody
+    GroupDTO update(@RequestBody Group group) {
+        groupService.toDTO(groupService.createOrUpdate(group))
+    }
+
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE, produces = "application/json")
+    @ResponseBody
+    GroupDTO delete(@PathVariable Long id) {
+        if (groupService.exists(id)) {
+            def dto = groupService.toDTO(groupService.getById(id))
+            groupService.delete(id)
+            dto
+        }
+        throw new CustomException("Group with id: $id does not exist. Thus, it cannot be deleted.")
     }
 }

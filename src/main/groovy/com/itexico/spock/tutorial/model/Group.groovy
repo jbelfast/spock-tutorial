@@ -1,6 +1,6 @@
 package com.itexico.spock.tutorial.model
 
-import javax.persistence.CascadeType
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
@@ -17,7 +17,9 @@ import javax.persistence.Table
 class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "ID")
     Long id;
+    @Column(name = "NAME")
     String name;
     @OneToMany(mappedBy = "group")
     List<User> users;

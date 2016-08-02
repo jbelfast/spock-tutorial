@@ -19,4 +19,6 @@ interface GroupService {
     List<GroupDTO> toDTO(List<Group> groups)
 
     GroupDTO toDTO(Group group)
+
+    boolean exists(Long id)
 }

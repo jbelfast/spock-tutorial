@@ -2,6 +2,7 @@ package com.itexico.spock.tutorial.service.impl
 
 import com.itexico.spock.tutorial.dao.GroupRepository
 import com.itexico.spock.tutorial.dto.GroupDTO
+import com.itexico.spock.tutorial.exceptions.CustomException
 import com.itexico.spock.tutorial.model.Group
 import com.itexico.spock.tutorial.model.User
 import com.itexico.spock.tutorial.service.GroupService
@@ -34,21 +35,30 @@ class GroupServiceImpl implements GroupService {
 
     @Override
     void delete(Long id) {
-        groupRepository.delete(id)
+        def u = []
+        getById(id).users.each { u << it.id }
+        if (u.size() == 0)
+            groupRepository.delete(id)
+        throw new CustomException("Group id $id has these users ${u.join(", ")} assigned. First, delete thouse users.")
     }
 
     @Override
     List<GroupDTO> toDTO(List<Group> groups) {
-        def list = [] as ArrayList<GroupDTO>
-        groups.each { list.add(toDTO(it)) }
+        def list = []
+        groups.each { list << toDTO(it) }
         list
     }
 
     @Override
     GroupDTO toDTO(Group group) {
-        def groupDTO = new GroupDTO(id: group.id, name: group.name)
-        group.users.each { groupDTO.users.add(toGroupUserDTO(it)) }
+        def groupDTO = new GroupDTO(id: group.id, name: group.name, users: [])
+        group.users.each { groupDTO.users << toGroupUserDTO(it) }
         groupDTO
+    }
+
+    @Override
+    boolean exists(Long id) {
+        groupRepository.exists(id)
     }
 
     private static GroupDTO.GroupUserDTO toGroupUserDTO(User user) {

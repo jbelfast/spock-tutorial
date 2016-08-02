@@ -5,7 +5,7 @@ import spock.lang.Specification
 /**
  * Created by Juan Malacrida on 01-Aug-16.
  */
-class UserServiceImplSpec extends Specification {
+class UserServiceImplSpec2 extends Specification {
     def setup() {
     }
 

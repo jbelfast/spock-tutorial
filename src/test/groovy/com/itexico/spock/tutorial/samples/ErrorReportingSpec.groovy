@@ -1,5 +1,6 @@
 package com.itexico.spock.tutorial.samples
 
+import spock.lang.Ignore
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -7,7 +8,7 @@ import spock.lang.Unroll
 /**
  * Created by Juan Malacrida on 20-Jul-16.
  */
-class SpockErrorReportingTest extends Specification {
+class ErrorReportingSpec extends Specification {
     def 'should select max of two numbers'() {
         expect:
         Math.max(a, b) == c
@@ -25,11 +26,12 @@ class SpockErrorReportingTest extends Specification {
         Math.max(a, b) == c
 
         where:
-        a | b | c
-        5 | 1 | 5
-        9 | 9 | 9
+        a | b || c
+        5 | 1 || 5
+        9 | 9 || 9
     }
 
+    @Ignore("Fails on purpose")
     // @Unroll with format as annotation's parameter:
     @Unroll('in unroll: max of #a and #b should be #c')
     def 'a b c'() {

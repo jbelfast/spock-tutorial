@@ -21,4 +21,6 @@ interface UserService {
     List<UserDTO> toDTO(List<User> users)
 
     UserDTO toDTO(User user)
+
+    boolean exists(Long id)
 }

@@ -10,6 +10,7 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Profile
 
 /**
  * Created by Juan Malacrida on 21-Jul-16.
@@ -24,6 +25,7 @@ class SpockTutorialApplication {
     }
 
     @Bean
+    @Profile(value = "!test")
     CommandLineRunner demo(GroupRepository groupRepository, UserRepository userRepository) {
         { args ->
             logger.info("running here!");

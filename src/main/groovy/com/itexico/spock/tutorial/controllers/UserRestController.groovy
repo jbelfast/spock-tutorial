@@ -1,6 +1,7 @@
 package com.itexico.spock.tutorial.controllers
 
 import com.itexico.spock.tutorial.dto.UserDTO
+import com.itexico.spock.tutorial.exceptions.CustomException
 import com.itexico.spock.tutorial.model.User
 import com.itexico.spock.tutorial.service.UserService
 import org.springframework.beans.factory.annotation.Autowired
@@ -29,16 +30,28 @@ class UserRestController {
         else userService.toDTO(userService.getByLastName(lastName))
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "createOrUpdate")
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     UserDTO getById(@PathVariable Long id) {
-        userService.toDTO(userService.getById(id))
+        if (userService.exists(id))
+            userService.toDTO(userService.getById(id))
+        throw new CustomException("User with id: $id does not exist. Thus, it cannot be retrieved.")
     }
 
-    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "createOrUpdate")
+    @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json")
     @ResponseBody
     UserDTO update(@RequestBody User user) {
         userService.toDTO(userService.createOrUpdate(user))
     }
 
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE, produces = "application/json")
+    @ResponseBody
+    UserDTO delete(@PathVariable Long id) {
+        if (userService.exists(id)) {
+            def dto = userService.toDTO(userService.getById(id))
+            userService.delete(id)
+            dto
+        }
+        throw new CustomException("User with id: $id does not exist. Thus, it cannot be deleted.")
+    }
 }

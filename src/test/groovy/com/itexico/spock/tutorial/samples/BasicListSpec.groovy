@@ -5,7 +5,7 @@ import spock.lang.Specification
 /**
  * Created by Juan Malacrida on 19-Jul-16.
  */
-class BasicListTest extends Specification {
+class BasicListSpec extends Specification {
     def "should not be empty after adding element"() {
         given: 'An empty list'
         def list = [] // [] is Groovy literal for List and is inferred
@@ -30,10 +30,8 @@ class BasicListTest extends Specification {
         list.remove(0)
 
         then: 'The list is empty'
-        // Spock can assert than an Exception was _NOT_ thrown:
-        notThrown(IllegalArgumentException)
-        // can call helper method here:
-        doCommonAssertions(list)
+        notThrown(IllegalArgumentException) // Spock can assert than an Exception was _NOT_ thrown
+        doCommonAssertions(list) // can call helper method here
     }
 
     // Assertion helpers have to have void return type and explicit asserts.
