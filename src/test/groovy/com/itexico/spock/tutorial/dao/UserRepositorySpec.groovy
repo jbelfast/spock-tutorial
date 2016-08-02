@@ -1,11 +1,12 @@
 package com.itexico.spock.tutorial.dao
 
+import com.itexico.spock.tutorial.common.BaseIntegrationSpec
 import org.springframework.beans.factory.annotation.Autowired
 
 /**
  * Created by Juan Malacrida on 02-Aug-16.
  */
-class UserRepositorySpec extends BaseRepositorySpec {
+class UserRepositorySpec extends BaseIntegrationSpec {
 
     @Autowired
     UserRepository userRepository;
@@ -29,6 +30,6 @@ class UserRepositorySpec extends BaseRepositorySpec {
         then: "I get that single user"
         users.size() == 1
 
-        
+
     }
 }

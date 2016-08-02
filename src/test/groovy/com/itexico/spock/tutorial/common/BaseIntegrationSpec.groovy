@@ -1,18 +1,13 @@
-package com.itexico.spock.tutorial.dao
+package com.itexico.spock.tutorial.common
 
 import com.itexico.spock.tutorial.SpockTutorialApplication
 import groovy.sql.Sql
-import org.junit.runner.RunWith
 import org.springframework.boot.test.SpringApplicationConfiguration
 import org.springframework.boot.test.WebIntegrationTest
 import org.springframework.test.annotation.DirtiesContext
-import org.springframework.test.context.ContextConfiguration
 import org.springframework.test.context.TestPropertySource
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import spock.lang.Shared
 import spock.lang.Specification
-
-import javax.transaction.Transactional
 
 /**
  * Created by Juan Malacrida on 02-Aug-16.
@@ -21,7 +16,7 @@ import javax.transaction.Transactional
 @WebIntegrationTest(randomPort = true)
 @TestPropertySource(["/application.properties"])
 @DirtiesContext
-abstract class BaseRepositorySpec extends Specification {
+abstract class BaseIntegrationSpec extends Specification {
     @Shared
     def sql = Sql.newInstance("jdbc:h2:mem:spock-tutorial;MODE=MySQL", "sa", "")
 

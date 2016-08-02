@@ -1,14 +1,11 @@
 package com.itexico.spock.tutorial.controllers
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-
 
 /**
  * Created by Juan Malacrida on 02-Aug-16.
  */
-class GroupRestControllerIntegrationSpec extends BaseIntegrationSpec {
+class GroupRestControllerIntegrationSpec extends BaseRestControllerSpec {
 
     def "test getAll"() {
         given: "There are two groups and three users stored in the repository"
