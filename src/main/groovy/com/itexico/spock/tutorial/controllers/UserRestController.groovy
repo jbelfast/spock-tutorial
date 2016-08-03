@@ -33,9 +33,9 @@ class UserRestController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     UserDTO getById(@PathVariable Long id) {
-        if (userService.exists(id))
-            userService.toDTO(userService.getById(id))
-        throw new CustomException("User with id: $id does not exist. Thus, it cannot be retrieved.")
+        if (!userService.exists(id))
+            throw new CustomException("User with id: $id does not exist. Thus, it cannot be retrieved.")
+        userService.toDTO(userService.getById(id))
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json")
@@ -47,11 +47,10 @@ class UserRestController {
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE, produces = "application/json")
     @ResponseBody
     UserDTO delete(@PathVariable Long id) {
-        if (userService.exists(id)) {
-            def dto = userService.toDTO(userService.getById(id))
-            userService.delete(id)
-            dto
-        }
-        throw new CustomException("User with id: $id does not exist. Thus, it cannot be deleted.")
+        if (!userService.exists(id))
+            throw new CustomException("User with id: $id does not exist. Thus, it cannot be deleted.")
+        def dto = userService.toDTO(userService.getById(id))
+        userService.delete(id)
+        dto
     }
 }

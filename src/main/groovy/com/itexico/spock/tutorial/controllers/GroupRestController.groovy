@@ -31,9 +31,9 @@ class GroupRestController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = "application/json")
     @ResponseBody
     GroupDTO getById(@PathVariable Long id) {
-        if (groupService.exists(id))
-            groupService.toDTO(groupService.getById(id))
-        throw new CustomException("Group with id: $id does not exist. Thus, it cannot be retrieved.")
+        if (!groupService.exists(id))
+            throw new CustomException("...Group with id: $id does not exist. Thus, it cannot be retrieved.")
+        groupService.toDTO(groupService.getById(id))
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST, produces = "application/json")
@@ -45,11 +45,10 @@ class GroupRestController {
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE, produces = "application/json")
     @ResponseBody
     GroupDTO delete(@PathVariable Long id) {
-        if (groupService.exists(id)) {
-            def dto = groupService.toDTO(groupService.getById(id))
-            groupService.delete(id)
-            dto
-        }
-        throw new CustomException("Group with id: $id does not exist. Thus, it cannot be deleted.")
+        if (!groupService.exists(id))
+            throw new CustomException("Group with id: $id does not exist. Thus, it cannot be deleted.")
+        def dto = groupService.toDTO(groupService.getById(id))
+        groupService.delete(id)
+        dto
     }
 }

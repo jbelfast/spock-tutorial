@@ -35,11 +35,14 @@ class GroupServiceImpl implements GroupService {
 
     @Override
     void delete(Long id) {
+        if (!exists(id))
+            throw new CustomException("Group id $id does not exists.")
         def u = []
         getById(id).users.each { u << it.id }
-        if (u.size() == 0)
+        if (u.isEmpty())
             groupRepository.delete(id)
-        throw new CustomException("Group id $id has these users ${u.join(", ")} assigned. First, delete thouse users.")
+        else
+            throw new CustomException("Group id $id has these users ${u.join(", ")} assigned. First, delete those users.")
     }
 
     @Override

@@ -11,8 +11,6 @@ class UserRepositorySpec extends BaseIntegrationSpec {
     @Autowired
     UserRepository userRepository;
 
-
-
     def "test findByLastName"() {
         given: "There are two groups and three users stored in the repository. Two of those users have the same last name"
 

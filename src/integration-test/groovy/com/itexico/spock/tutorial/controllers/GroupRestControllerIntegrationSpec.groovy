@@ -1,5 +1,7 @@
 package com.itexico.spock.tutorial.controllers
 
+import spock.lang.Ignore
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 
 /**
@@ -7,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
  */
 class GroupRestControllerIntegrationSpec extends BaseRestControllerSpec {
 
+    @Ignore
     def "test getAll"() {
         given: "There are two groups and three users stored in the repository"
 
@@ -35,31 +38,4 @@ class GroupRestControllerIntegrationSpec extends BaseRestControllerSpec {
         json[1].id == 2
         json[1].name == 'G2'
     }
-
-//    def "test getById"() {
-//        given:
-//
-//        when:
-//        // TODO implement stimulus
-//        then:
-//        // TODO implement assertions
-//    }
-//
-//    def "test update"() {
-//        given:
-//
-//        when:
-//        // TODO implement stimulus
-//        then:
-//        // TODO implement assertions
-//    }
-//
-//    def "test delete"() {
-//        given:
-//
-//        when:
-//        // TODO implement stimulus
-//        then:
-//        // TODO implement assertions
-//    }
 }
