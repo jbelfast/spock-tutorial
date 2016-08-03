@@ -14,7 +14,6 @@ import spock.lang.Specification
  */
 @SpringApplicationConfiguration(classes = [SpockTutorialApplication.class])
 @WebIntegrationTest(randomPort = true)
-@TestPropertySource(["/application-test.properties"])
 @DirtiesContext
 abstract class BaseIntegrationSpec extends Specification {
     @Shared
