@@ -14,7 +14,7 @@ import spock.lang.Specification
  */
 @SpringApplicationConfiguration(classes = [SpockTutorialApplication.class])
 @WebIntegrationTest(randomPort = true)
-@TestPropertySource(["/application-integration.properties"])
+@TestPropertySource(["/application-test.properties"])
 @DirtiesContext
 abstract class BaseIntegrationSpec extends Specification {
     @Shared
@@ -23,7 +23,7 @@ abstract class BaseIntegrationSpec extends Specification {
     def setupSpec() {
 
         def properties = new Properties()
-        def propertiesFile = new File(getClass().getResource("/application-integration.properties").file)
+        def propertiesFile = new File(getClass().getResource("/application-test.properties").file)
         propertiesFile.withInputStream {
             properties.load(it)
         }
