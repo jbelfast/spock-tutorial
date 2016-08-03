@@ -41,8 +41,44 @@ dependencies {
     testCompile 'org.spockframework:spock-spring:1.0-groovy-2.4'
 
 }
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+}
 
 war {
     baseName = 'spock-tutorial'
     version = "{$version}"
 }
+
+sourceSets {
+    integrationTest {
+        java {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/integration-test/java')
+        }
+        groovy {
+            compileClasspath += main.output + test.output
+            runtimeClasspath += main.output + test.output
+            srcDir file('src/integration-test/groovy')
+        }
+        resources.srcDir file('src/integration-test/resources')
+    }
+}
+
+test {
+    systemProperties['spring.profiles.active'] = System.properties['spring.profiles.active'] ?: 'test'
+}
+
+task integrationTest(type: Test) {
+    systemProperties['spring.profiles.active'] = System.properties['spring.profiles.active'] ?: 'test'
+    group = 'verification'
+    description = 'Runs integration tests'
+    testClassesDir = sourceSets.integrationTest.output.classesDir
+    classpath = sourceSets.integrationTest.runtimeClasspath
+    outputs.upToDateWhen { false } // Always rerun integration tests
+}
+// Fully testing the app requires integrationTest to run
+check.dependsOn integrationTest
+integrationTest.mustRunAfter test // Unit tests first
