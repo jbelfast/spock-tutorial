@@ -1,7 +1,5 @@
 package com.itexico.spock.tutorial.controllers
 
-import spock.lang.Ignore
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 
 /**
@@ -9,7 +7,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
  */
 class GroupRestControllerIntegrationSpec extends BaseRestControllerSpec {
 
-    @Ignore
     def "test getAll"() {
         given: "There are two groups and three users stored in the repository"
 

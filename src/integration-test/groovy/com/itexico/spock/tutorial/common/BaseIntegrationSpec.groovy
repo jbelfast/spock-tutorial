@@ -2,10 +2,10 @@ package com.itexico.spock.tutorial.common
 
 import com.itexico.spock.tutorial.SpockTutorialApplication
 import groovy.sql.Sql
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.test.SpringApplicationConfiguration
 import org.springframework.boot.test.WebIntegrationTest
 import org.springframework.test.annotation.DirtiesContext
-import org.springframework.test.context.TestPropertySource
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -16,26 +16,36 @@ import spock.lang.Specification
 @WebIntegrationTest(randomPort = true)
 @DirtiesContext
 abstract class BaseIntegrationSpec extends Specification {
+
     @Shared
-    Sql sql
+    Sql sql = null
 
-    def setupSpec() {
+    @Value('${spring.datasource.url}')
+    String datasourceUrl
 
-        def properties = new Properties()
-        def propertiesFile = new File(getClass().getResource("/application-test.properties").file)
-        propertiesFile.withInputStream {
-            properties.load(it)
+    @Value('${spring.datasource.username}')
+    String datasourceUsername
+
+    @Value('${spring.datasource.password}')
+    String datasourcePassword
+
+    @Value('${spring.datasource.driverClassName}')
+    String datasourceDriverClassName
+
+    def setup() {
+        if (sql == null) {
+            println "initializing sql once"
+            sql = Sql.newInstance(datasourceUrl, datasourceUsername, datasourcePassword)
+            sql.execute("CREATE TABLE IF NOT EXISTS GROUPS (ID INT PRIMARY KEY, NAME VARCHAR)")
+            sql.execute("CREATE TABLE IF NOT EXISTS USERS (ID INT PRIMARY KEY, FIRST_NAME VARCHAR, LAST_NAME VARCHAR, GROUP_ID INT)")
+            sql.execute("ALTER TABLE IF EXISTS USERS ADD FOREIGN KEY (GROUP_ID) REFERENCES GROUPS(ID)")
+        } else {
+            println "not initializing sql"
         }
-
-        sql = Sql.newInstance(properties."spring.datasource.url", properties."spring.datasource.username", properties."spring.datasource.password")
-
-        sql.execute("CREATE TABLE GROUPS (ID INT PRIMARY KEY, NAME VARCHAR)")
-        sql.execute("CREATE TABLE USERS (ID INT PRIMARY KEY, FIRST_NAME VARCHAR, LAST_NAME VARCHAR, GROUP_ID INT)")
-        sql.execute("ALTER TABLE USERS ADD FOREIGN KEY (GROUP_ID) REFERENCES GROUPS(ID)")
     }
 
     def cleanupSpec() {
-        sql.execute("DROP TABLE USERS;")
-        sql.execute("DROP TABLE GROUPS;")
+        sql.execute("DROP TABLE IF EXISTS USERS")
+        sql.execute("DROP TABLE IF EXISTS GROUPS")
     }
 }

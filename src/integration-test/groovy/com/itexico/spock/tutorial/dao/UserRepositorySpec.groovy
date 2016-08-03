@@ -22,12 +22,18 @@ class UserRepositorySpec extends BaseIntegrationSpec {
         sql.execute """INSERT INTO USERS (ID, FIRST_NAME, LAST_NAME, GROUP_ID) VALUES (3, 'F20', 'L20', 2) """
 
         when: "I find one user by last name (unique last name)"
-
         def users = userRepository.findByLastName("L20")
 
         then: "I get that single user"
         users.size() == 1
+        users[0].id == 3L
 
+        when: "I find one user by last name (unique last name)"
+        def users2 = userRepository.findByLastName("L10")
 
+        then: "I get two users"
+        users2.size() == 2
+        users2[0].id == 1L
+        users2[1].id == 2L
     }
 }

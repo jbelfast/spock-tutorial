@@ -17,12 +17,16 @@ abstract class BaseRestControllerSpec extends BaseIntegrationSpec {
     @Autowired
     WebApplicationContext webApp
 
-    MockMvc mockMvc
+    @Shared
+    MockMvc mockMvc = null
 
     @Shared
     def jsonSlurper = new JsonSlurper()
 
     def setup() {
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApp).alwaysDo(print())build()
+        if (mockMvc == null) {
+            println "initializing mockMVC once"
+            mockMvc = MockMvcBuilders.webAppContextSetup(webApp).alwaysDo(print()) build()
+        }
     }
 }
